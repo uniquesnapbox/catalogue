@@ -22,15 +22,49 @@
         .container { max-width: 1200px; margin: 30px auto; padding: 20px; }
         .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 
-        /* Mobile Responsive */
+        /* Mobile Responsive - 2 columns & smaller */
         @media (max-width: 768px) {
-            .product-grid { grid-template-columns: repeat(2, 1fr); }
+            body { padding-bottom: 60px; }
+            .header { padding: 15px; }
+            .header h1 { font-size: 20px; }
+            .header-logo { width: 60px; height: 60px; margin-bottom: 8px; }
+            .container { padding: 12px; margin: 15px auto; }
+            .product-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .card { aspect-ratio: 1; display: flex; flex-direction: column; }
+            .card-img { height: 60%; flex-grow: 1; font-size: 45px; padding: 15px; background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 40%, #fff3e0 100%) !important; box-shadow: inset 0 2px 8px rgba(0,0,0,0.08); }
+            .card-img::before { font-size: 35px; }
+            .card-content { flex-grow: 1; display: flex; flex-direction: column; justify-content: flex-start; padding: 10px; }
+            .product-id { font-size: 12px; margin-bottom: 3px; }
+            .product-name { font-size: 13px; margin-bottom: 5px; }
+            .product-price { font-size: 15px; }
+            .card-btn { width: 28px; height: 28px; font-size: 12px; }
+            .fab { width: 45px; height: 45px; font-size: 20px; }
         }
 
+        /* Product Modal */
+        .modal { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
+        .modal.active { display: flex; align-items: center; justify-content: center; }
+        .modal-content { background-color: white; padding: 30px; border-radius: 15px; width: 90%; max-width: 500px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .modal-header h2 { margin: 0; color: var(--primary-blue); }
+        .modal-close { background: none; border: none; font-size: 28px; cursor: pointer; color: #999; }
+        .modal-close:hover { color: #333; }
+        .modal-img { width: 100%; height: 300px; background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 40%, #fff3e0 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 80px; margin-bottom: 20px; }
+        .modal-details { margin: 20px 0; }
+        .modal-details p { margin: 10px 0; color: #666; }
+        .modal-price { font-size: 28px; font-weight: bold; color: var(--primary-blue); margin: 15px 0; }
+        .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+        .modal-btn { flex: 1; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .modal-whatsapp { background: #25d366; color: white; }
+        .modal-call { background: var(--accent-orange); color: white; }
+        .modal-btn:hover { opacity: 0.9; }
+
         /* Card Styling based on your image */
-        .card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 1px solid #eee; transition: 0.3s; position: relative; }
+        .card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 1px solid #eee; transition: 0.3s; position: relative; cursor: pointer; }
         .card:hover { transform: translateY(-5px); border-color: var(--accent-orange); }
-        .card-img { height: 180px; background: #eef2f6; display: flex; align-items: center; justify-content: center; color: #adb5bd; font-weight: bold; }
+        .card-img { height: 180px; background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 50%, #fff3e0 100%); display: flex; align-items: center; justify-content: center; color: #90a4ae; font-weight: bold; font-size: 14px; position: relative; overflow: hidden; }
+        .card-img::before { content: "📦"; font-size: 50px; position: absolute; opacity: 0.3; }
+        .card-img::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.4), transparent 60%); }
         .card-content { padding: 15px; }
         .product-id { color: var(--accent-orange); font-weight: bold; font-size: 14px; margin-bottom: 5px; }
         .product-name { color: var(--primary-blue); font-size: 18px; font-weight: 600; margin-bottom: 10px; }
@@ -112,6 +146,162 @@
                     <div class="product-price">₹4</div>
                 </div>
             </div>
+            <div class="card">
+                <div class="card-actions">
+                    <a href="https://wa.me/917099481497?text=I'm interested in US-MRH Metal Red Holder" class="card-btn card-whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="tel:+917099481497" class="card-btn card-call" title="Call"><i class="fas fa-phone"></i></a>
+                </div>
+                <div class="card-img">PRODUCT IMAGE</div>
+                <div class="card-content">
+                    <div class="product-id">US-MRH</div>
+                    <div class="product-name">Metal Red Holder</div>
+                    <div class="product-price">₹30</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-actions">
+                    <a href="https://wa.me/917099481497?text=I'm interested in US-KC Key Chain" class="card-btn card-whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="tel:+917099481497" class="card-btn card-call" title="Call"><i class="fas fa-phone"></i></a>
+                </div>
+                <div class="card-img">PRODUCT IMAGE</div>
+                <div class="card-content">
+                    <div class="product-id">US-KC</div>
+                    <div class="product-name">Key Chain</div>
+                    <div class="product-price">₹19</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-actions">
+                    <a href="https://wa.me/917099481497?text=I'm interested in US-PVC Normal PVC Card" class="card-btn card-whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="tel:+917099481497" class="card-btn card-call" title="Call"><i class="fas fa-phone"></i></a>
+                </div>
+                <div class="card-img">PRODUCT IMAGE</div>
+                <div class="card-content">
+                    <div class="product-id">US-PVC</div>
+                    <div class="product-name">Normal PVC Card</div>
+                    <div class="product-price">₹30</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-actions">
+                    <a href="https://wa.me/917099481497?text=I'm interested in US-MPC Modern PVC Card" class="card-btn card-whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="tel:+917099481497" class="card-btn card-call" title="Call"><i class="fas fa-phone"></i></a>
+                </div>
+                <div class="card-img">PRODUCT IMAGE</div>
+                <div class="card-content">
+                    <div class="product-id">US-MPC</div>
+                    <div class="product-name">Modern PVC Card</div>
+                    <div class="product-price">₹200</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-actions">
+                    <a href="https://wa.me/917099481497?text=I'm interested in US-04 Premium Badge" class="card-btn card-whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="tel:+917099481497" class="card-btn card-call" title="Call"><i class="fas fa-phone"></i></a>
+                </div>
+                <div class="card-img">PRODUCT IMAGE</div>
+                <div class="card-content">
+                    <div class="product-id">US-04</div>
+                    <div class="product-name">Premium Badge</div>
+                    <div class="product-price">₹12</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-actions">
+                    <a href="https://wa.me/917099481497?text=I'm interested in US-05 Lanyard" class="card-btn card-whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="tel:+917099481497" class="card-btn card-call" title="Call"><i class="fas fa-phone"></i></a>
+                </div>
+                <div class="card-img">PRODUCT IMAGE</div>
+                <div class="card-content">
+                    <div class="product-id">US-05</div>
+                    <div class="product-name">Lanyard</div>
+                    <div class="product-price">₹8</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-actions">
+                    <a href="https://wa.me/917099481497?text=I'm interested in US-06 Business Card" class="card-btn card-whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="tel:+917099481497" class="card-btn card-call" title="Call"><i class="fas fa-phone"></i></a>
+                </div>
+                <div class="card-img">PRODUCT IMAGE</div>
+                <div class="card-content">
+                    <div class="product-id">US-06</div>
+                    <div class="product-name">Business Card</div>
+                    <div class="product-price">₹2</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-actions">
+                    <a href="https://wa.me/917099481497?text=I'm interested in US-07 Sticker Set" class="card-btn card-whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="tel:+917099481497" class="card-btn card-call" title="Call"><i class="fas fa-phone"></i></a>
+                </div>
+                <div class="card-img">PRODUCT IMAGE</div>
+                <div class="card-content">
+                    <div class="product-id">US-07</div>
+                    <div class="product-name">Sticker Set</div>
+                    <div class="product-price">₹10</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-actions">
+                    <a href="https://wa.me/917099481497?text=I'm interested in US-08 T-Shirt Print" class="card-btn card-whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="tel:+917099481497" class="card-btn card-call" title="Call"><i class="fas fa-phone"></i></a>
+                </div>
+                <div class="card-img">PRODUCT IMAGE</div>
+                <div class="card-content">
+                    <div class="product-id">US-08</div>
+                    <div class="product-name">T-Shirt Print</div>
+                    <div class="product-price">₹50</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-actions">
+                    <a href="https://wa.me/917099481497?text=I'm interested in US-10 Certificate" class="card-btn card-whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="tel:+917099481497" class="card-btn card-call" title="Call"><i class="fas fa-phone"></i></a>
+                </div>
+                <div class="card-img">PRODUCT IMAGE</div>
+                <div class="card-content">
+                    <div class="product-id">US-10</div>
+                    <div class="product-name">Certificate</div>
+                    <div class="product-price">₹15</div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-actions">
+                    <a href="https://wa.me/917099481497?text=I'm interested in US-11 Brochure" class="card-btn card-whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="tel:+917099481497" class="card-btn card-call" title="Call"><i class="fas fa-phone"></i></a>
+                </div>
+                <div class="card-img">PRODUCT IMAGE</div>
+                <div class="card-content">
+                    <div class="product-id">US-11</div>
+                    <div class="product-name">Brochure</div>
+                    <div class="product-price">₹7</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalProductName"></h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-img" id="modalProductImg"></div>
+            <div class="modal-details">
+                <p><strong>Product ID:</strong> <span id="modalProductId"></span></p>
+                <div class="modal-price" id="modalProductPrice"></div>
+                <p id="modalProductDesc" style="color: #888; font-size: 14px; margin-top: 10px;"></p>
+            </div>
+            <div class="modal-actions">
+                <a href="#" id="modalWhatsApp" class="modal-btn modal-whatsapp" target="_blank">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </a>
+                <a href="#" id="modalCall" class="modal-btn modal-call">
+                    <i class="fas fa-phone"></i> Call
+                </a>
+            </div>
         </div>
     </div>
 
@@ -127,6 +317,63 @@
     <footer>
         © 2026 UNIQUZ SNAPBOX | All Rights Reserved
     </footer>
+
+    <script>
+        const products = {
+            'US-01': { name: 'ID Holder', price: '₹5', desc: 'Professional ID holder for workplace identification' },
+            'US-02': { name: 'ID Holder Premium', price: '₹5', desc: 'Premium quality ID holder with enhanced durability' },
+            'US-03': { name: 'AC Printed', price: '₹6', desc: 'AC printed material for air conditioning installations' },
+            'US-09': { name: 'Holder', price: '₹4', desc: 'Basic multipurpose holder' },
+            'US-MRH': { name: 'Metal Red Holder', price: '₹30', desc: 'Stylish metal red holder for premium branding' },
+            'US-KC': { name: 'Key Chain', price: '₹19', desc: 'Custom branded key chain accessory' },
+            'US-PVC': { name: 'Normal PVC Card', price: '₹30', desc: 'Standard PVC card for identification' },
+            'US-MPC': { name: 'Modern PVC Card', price: '₹200', desc: 'Advanced modern PVC card with special features' },
+            'US-04': { name: 'Premium Badge', price: '₹12', desc: 'Premium quality badge for professional use' },
+            'US-05': { name: 'Lanyard', price: '₹8', desc: 'Durable lanyard for ID card attachment' },
+            'US-06': { name: 'Business Card', price: '₹2', desc: 'Professional printed business card' },
+            'US-07': { name: 'Sticker Set', price: '₹10', desc: 'Custom branded sticker collection' },
+            'US-08': { name: 'T-Shirt Print', price: '₹50', desc: 'Premium quality t-shirt with custom print' },
+            'US-10': { name: 'Certificate', price: '₹15', desc: 'Professional printed certificate' },
+            'US-11': { name: 'Brochure', price: '₹7', desc: 'Tri-fold marketing brochure' }
+        };
+
+        function openModal(productId) {
+            const product = products[productId];
+            if (!product) return;
+            
+            document.getElementById('modalProductName').textContent = product.name;
+            document.getElementById('modalProductId').textContent = productId;
+            document.getElementById('modalProductPrice').textContent = product.price;
+            document.getElementById('modalProductDesc').textContent = product.desc;
+            
+            const waMessage = `I'm interested in ${productId} ${product.name}`;
+            document.getElementById('modalWhatsApp').href = `https://wa.me/917099481497?text=${encodeURIComponent(waMessage)}`;
+            document.getElementById('modalCall').href = 'tel:+917099481497';
+            
+            document.getElementById('productModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('productModal').classList.remove('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const productId = this.querySelector('.product-id').textContent;
+                    openModal(productId);
+                });
+            });
+        });
+
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('productModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        });
+    </script>
 
 </body>
 </html>
