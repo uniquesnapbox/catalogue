@@ -20,7 +20,12 @@
 
         /* Product Grid */
         .container { max-width: 1200px; margin: 30px auto; padding: 20px; }
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+        .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .product-grid { grid-template-columns: repeat(2, 1fr); }
+        }
 
         /* Card Styling based on your image */
         .card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); border: 1px solid #eee; transition: 0.3s; position: relative; }
@@ -43,12 +48,15 @@
         .fab-call { background-color: var(--primary-blue); border: 2px solid white; }
         .fab:hover { transform: scale(1.1); }
 
+        .header-logo { width: 80px; height: 80px; object-fit: contain; margin-bottom: 15px; }
+
         footer { text-align: center; padding: 20px; color: #6c757d; }
     </style>
 </head>
 <body>
 
     <div class="header">
+        <img src="1744871750011.jpg" alt="UNIQUZ SNAPBOX Logo" class="header-logo">
         <h1>UNIQUZ SNAPBOX</h1>
         <p>Business Consultancy Services & Solutions</p>
     </div>
