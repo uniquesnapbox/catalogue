@@ -49,6 +49,7 @@
         }
 
         /* Product Modal */
+        body.modal-open { overflow: hidden; }
         .modal { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
         .modal.active { display: flex; align-items: center; justify-content: center; }
         .modal-content { background-color: white; padding: 30px; border-radius: 15px; width: 90%; max-width: 500px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
@@ -56,7 +57,8 @@
         .modal-header h2 { margin: 0; color: var(--primary-blue); }
         .modal-close { background: none; border: none; font-size: 28px; cursor: pointer; color: #999; }
         .modal-close:hover { color: #333; }
-        .modal-img { width: 100%; height: 300px; background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 40%, #fff3e0 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 80px; margin-bottom: 20px; }
+        .modal-img { width: 100%; height: 300px; background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 40%, #fff3e0 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 80px; margin-bottom: 20px; background-size: cover; background-position: center; background-repeat: no-repeat; }
+        .modal-img.has-photo { background-color: #ffffff; }
         .modal-details { margin: 20px 0; }
         .modal-details p { margin: 10px 0; color: #666; }
         .modal-price { font-size: 28px; font-weight: bold; color: var(--primary-blue); margin: 15px 0; }
@@ -85,6 +87,10 @@
         }
         .card-img::before { content: "🎫"; font-size: 64px; position: absolute; opacity: 0.9; }
         .card-img::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 25% 25%, rgba(255,255,255,0.15), transparent 60%); }
+        .card-img.photo { background: #ffffff; color: transparent; }
+        .card-img.photo::before,
+        .card-img.photo::after { display: none; }
+        .card-img.photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
         
         .card-content { padding: 14px 14px 56px; background: #ffffff; position: relative; }
         .product-id { color: var(--accent-orange); font-weight: 600; font-size: 10px; margin-bottom: 6px; letter-spacing: 0.8px; text-transform: uppercase; opacity: 0.8; }
@@ -146,7 +152,9 @@
         <h2 style="color: var(--primary-blue); border-left: 5px solid var(--accent-orange); padding-left: 15px;">Featured Products</h2>
         <div class="product-grid">
             <div class="card">
-                <div class="card-img">PRODUCT IMAGE</div>
+                <div class="card-img photo">
+                    <img src="image/US-01-ID-Holder.jpg" alt="US-01 ID Holder">
+                </div>
                 <div class="card-content">
                     <div class="product-id">US-01</div>
                     <div class="product-name">ID Holder</div>
@@ -158,7 +166,9 @@
                 </div>
             </div>
             <div class="card">
-                <div class="card-img">PRODUCT IMAGE</div>
+                <div class="card-img photo">
+                    <img src="image/US-02- PRMEIUM OLDER ₹50.jpg" alt="US-02 ID Holder Premium">
+                </div>
                 <div class="card-content">
                     <div class="product-id">US-02</div>
                     <div class="product-name">ID Holder Premium</div>
@@ -367,8 +377,8 @@
 
     <script>
         const products = {
-            'US-01': { name: 'ID Holder', price: '₹5', desc: 'Professional ID holder for workplace identification' },
-            'US-02': { name: 'ID Holder Premium', price: '₹5', desc: 'Premium quality ID holder with enhanced durability' },
+            'US-01': { name: 'ID Holder', price: '₹5', desc: 'Professional ID holder for workplace identification', image: 'image/US-01-ID-Holder.jpg' },
+            'US-02': { name: 'ID Holder Premium', price: '₹5', desc: 'Premium quality ID holder with enhanced durability', image: 'image/US-02- PRMEIUM OLDER ₹50.jpg' },
             'US-03': { name: 'AC Printed', price: '₹6', desc: 'AC printed material for air conditioning installations' },
             'US-09': { name: 'Holder', price: '₹4', desc: 'Basic multipurpose holder' },
             'US-MRH': { name: 'Metal Red Holder', price: '₹30', desc: 'Stylish metal red holder for premium branding' },
@@ -388,29 +398,66 @@
             const product = products[productId];
             if (!product) return;
             
+            const modalImg = document.getElementById('modalProductImg');
+
             document.getElementById('modalProductName').textContent = product.name;
             document.getElementById('modalProductId').textContent = productId;
             document.getElementById('modalProductPrice').textContent = product.price;
             document.getElementById('modalProductDesc').textContent = product.desc;
+
+            if (product.image) {
+                modalImg.classList.add('has-photo');
+                modalImg.style.backgroundImage = `url('${product.image}')`;
+                modalImg.textContent = '';
+            } else {
+                modalImg.classList.remove('has-photo');
+                modalImg.style.backgroundImage = '';
+                modalImg.textContent = '';
+            }
             
             const waMessage = `I'm interested in ${productId} ${product.name}`;
             document.getElementById('modalWhatsApp').href = `https://wa.me/917099481497?text=${encodeURIComponent(waMessage)}`;
             document.getElementById('modalCall').href = 'tel:+917099481497';
             
+            document.body.classList.add('modal-open');
             document.getElementById('productModal').classList.add('active');
         }
 
         function closeModal() {
             document.getElementById('productModal').classList.remove('active');
+            document.body.classList.remove('modal-open');
         }
 
         document.addEventListener('DOMContentLoaded', function() {
             const cards = document.querySelectorAll('.card');
+            let lastTouchTime = 0;
+
+            const openFromCard = (card) => {
+                const productIdEl = card.querySelector('.product-id');
+                if (!productIdEl) return;
+                openModal(productIdEl.textContent.trim());
+            };
+
             cards.forEach(card => {
+                card.addEventListener('touchstart', function() {
+                    lastTouchTime = Date.now();
+                    openFromCard(this);
+                }, { passive: true });
+
                 card.addEventListener('click', function() {
-                    const productId = this.querySelector('.product-id').textContent;
-                    openModal(productId);
+                    if (Date.now() - lastTouchTime < 350) return;
+                    openFromCard(this);
                 });
+            });
+
+            const actionLinks = document.querySelectorAll('.card-actions a');
+            actionLinks.forEach(link => {
+                link.addEventListener('click', function(event) {
+                    event.stopPropagation();
+                });
+                link.addEventListener('touchstart', function(event) {
+                    event.stopPropagation();
+                }, { passive: true });
             });
         });
 
