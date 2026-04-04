@@ -4,338 +4,749 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UNIQUZ SNAPBOX - Product Catalog</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --primary-blue: #05007f; /* From your logo */
-            --accent-orange: #ea700d; /* From your logo */
-            --light-bg: #f8f9fa;
+            --primary-blue: #0b3fe9;
+            --accent-orange: #ff7a20;
+            --bg-light: #f4f7ff;
+            --card-bg: #ffffff;
+            --text-primary: #0f172a;
+            --text-muted: #475569;
+            --border-soft: rgba(15,23,42,0.08);
         }
 
-        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #ffffff; margin: 0; padding-bottom: 40px; color: #111827; }
-        
-        /* Header styling - Desktop */
-        .header { background: var(--primary-blue); color: white; padding: 25px 40px; border-bottom: 6px solid var(--accent-orange); display: flex; align-items: center; gap: 30px; }
-        .header-logo { width: 40px; height: 40px; object-fit: contain; flex-shrink: 0; background: white; border-radius: 8px; padding: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
-        .header-text { flex: 1; text-align: center; }
-        .header h1 { margin: 0 0 8px 0; font-size: 32px; letter-spacing: 1.5px; font-weight: 700; }
-        .header p { margin: 0; font-size: 15px; opacity: 0.95; font-weight: 400; letter-spacing: 0.3px; }
-
-        /* Product Grid */
-        .container { max-width: 1200px; margin: 10px auto; padding: 20px; }
-        .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; grid-auto-rows: 1fr; }
-
-        /* Mobile-first grid: 2 columns */
-        .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-
-        @media (min-width: 769px) {
-            .product-grid { grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        * {
+            box-sizing: border-box;
         }
 
-            .fab-container { bottom: 15px; right: 15px; }
-            .fab { width: 45px; height: 45px; font-size: 18px; }
-            .header { padding: 20px 15px; background: var(--primary-blue); justify-content: center; }
-            .header-logo { width: 15px; height: 15px; padding: 4px; }
-            .header-text { display: none; }
-            .container { padding: 12px; margin: 8px auto; }
-            .container h2 { font-size: 16px; margin: 4px 0 8px 0 !important; padding: 6px 0 6px 10px !important; border-left: 4px solid var(--accent-orange) !important; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-            .container h2::before { display: none; }
-            .container h2::before { font-size: 18px; margin-right: 8px; }
-            .card { min-height: 260px; }
-            .card-img { height: 35px; }
-            .card-actions { bottom: 12px; right: 10px; }
-            .product-price { bottom: 12px; left: 12px; }
-            .card-btn { width: 36px; height: 36px; font-size: 14px; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: 'Sora', 'Segoe UI', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-primary);
         }
 
-        /* Product Modal */
-        body.modal-open { overflow: hidden; }
-        .modal { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
-        .modal.active { display: flex; align-items: center; justify-content: center; }
-        .modal-content { background-color: white; padding: 30px; border-radius: 15px; width: 90%; max-width: 500px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .modal-header h2 { margin: 0; color: var(--primary-blue); }
-        .modal-close { background: none; border: none; font-size: 28px; cursor: pointer; color: #999; }
-        .modal-close:hover { color: #333; }
-        .modal-img { width: 100%; height: 300px; background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 40%, #fff3e0 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 80px; margin-bottom: 20px; background-size: cover; background-position: center; background-repeat: no-repeat; }
-        .modal-img.has-photo { background-color: #ffffff; }
-        .modal-details { margin: 20px 0; }
-        .modal-details p { margin: 10px 0; color: #666; }
-        .modal-price { font-size: 28px; font-weight: bold; color: var(--primary-blue); margin: 15px 0; }
-        .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
-        .modal-btn { flex: 1; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .modal-whatsapp { background: #25d366; color: white; }
-        .modal-call { background: var(--accent-orange); color: white; }
-        .modal-btn:hover { opacity: 0.9; }
-
-        /* Card Styling - Clean Professional */
-        .card { background: #ffffff; border-radius: 14px; overflow: hidden; box-shadow: 0 6px 18px rgba(0,0,0,0.08); border: 1px solid rgba(0,0,0,0.04); transition: transform 0.2s ease, box-shadow 0.2s ease; position: relative; cursor: pointer; height: 100%; }
-        .card:hover { transform: translateY(-4px); box-shadow: 0 10px 24px rgba(0,0,0,0.12); }
-        
-        .card-img { 
-            height: 150px; 
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            color: white; 
-            font-weight: 700; 
-            font-size: 48px;
-            position: relative; 
-            overflow: hidden; 
-            border-bottom: 1px solid rgba(0,0,0,0.06);
+        html {
+            scroll-behavior: smooth;
         }
-        .card-img::before { content: "🎫"; font-size: 64px; position: absolute; opacity: 0.9; }
-        .card-img::after { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 25% 25%, rgba(255,255,255,0.15), transparent 60%); }
-        .card-img.photo { background: #ffffff; color: transparent; }
-        .card-img.photo::before,
-        .card-img.photo::after { display: none; }
-        .card-img.photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        
-        .card-content { padding: 14px 14px 56px; background: #ffffff; position: relative; }
-        .product-id { color: var(--accent-orange); font-weight: 600; font-size: 10px; margin-bottom: 6px; letter-spacing: 0.8px; text-transform: uppercase; opacity: 0.8; }
-        .product-name { color: #111827; font-size: 14px; font-weight: 700; margin-bottom: 10px; line-height: 1.35; }
-        .product-price { font-size: 20px; font-weight: 900; color: #111827; position: absolute; bottom: 12px; left: 14px; line-height: 1; }
-        .card-actions { position: absolute; bottom: 12px; right: 12px; display: flex; flex-direction: column; gap: 6px; z-index: 2; }
-        .card-btn { width: 36px; height: 36px; border-radius: 999px; display: flex; align-items: center; justify-content: center; color: #ffffff; text-decoration: none; font-size: 14px; box-shadow: 0 4px 10px rgba(0,0,0,0.12); transition: transform 0.2s ease; }
-        .card-btn:hover { transform: scale(1.15); }
-        .card-whatsapp { background: #25d366; }
-        .card-call { display: none; }
 
-        /* Floating Action Buttons (FAB) */
-        .fab-container { display: flex; position: fixed; bottom: 20px; right: 20px; z-index: 999; }
-        .fab { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); text-decoration: none; transition: 0.3s; }
-        .fab-whatsapp { display: none; }
-        .fab-call { background: #25d366; }
-        .fab:hover { transform: scale(1.15); box-shadow: 0 6px 16px rgba(0,0,0,0.3); }
-
-        .header-logo { width: 80px; height: 80px; object-fit: contain; margin-bottom: 15px; }
-
-        footer { text-align: center; padding: 20px; color: #6c757d; }
-
-        /* Featured Products Section */
-        .container h2 {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, #0a00b3 100%);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            color: var(--primary-blue);
-            font-size: 28px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            margin: 0 0 25px 0 !important;
-            padding: 0 0 15px 15px !important;
-            border-left: 6px solid var(--accent-orange) !important;
+        .header {
             position: relative;
+            padding: 58px 20px 54px;
+            background: radial-gradient(circle at 15% 10%, rgba(116, 145, 255, 0.36), transparent 30%),
+                        radial-gradient(circle at 85% 0%, rgba(15, 181, 255, 0.25), transparent 26%),
+                        linear-gradient(140deg, #040a4e 0%, #071779 42%, #0b2ea1 100%);
+            color: white;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, rgba(255,255,255,0.05), transparent 55%);
+            pointer-events: none;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            inset: auto -80px -70px auto;
+            width: 240px;
+            height: 240px;
+            background: radial-gradient(circle, rgba(255,255,255,0.2), rgba(255,255,255,0));
+            pointer-events: none;
+            filter: blur(2px);
+        }
+
+        .header-inner {
+            position: relative;
+            max-width: 1120px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .header-top {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+            text-align: center;
+            width: 100%;
+            max-width: 840px;
+            padding: 26px 24px;
+            border-radius: 30px;
+            background: linear-gradient(165deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08));
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            box-shadow: 0 24px 52px rgba(2, 10, 54, 0.35);
+            backdrop-filter: blur(8px);
+        }
+
+        .header-logo {
+            width: 82px;
+            height: 82px;
+            object-fit: contain;
+            background: white;
+            border-radius: 26px;
+            padding: 14px;
+            box-shadow: 0 14px 40px rgba(15, 23, 42, 0.24);
+            z-index: 1;
+        }
+
+        .header-text {
+            max-width: 760px;
+            z-index: 1;
+        }
+
+        .header-title {
+            margin: 0;
+            font-size: clamp(2.1rem, 4vw, 3rem);
+            line-height: 1.1;
+            letter-spacing: -0.01em;
+            font-weight: 800;
+            text-shadow: 0 4px 20px rgba(8, 14, 50, 0.35);
+        }
+
+        .header-subtitle {
+            margin: 0;
+            color: rgba(237, 244, 255, 0.95);
+            font-size: 1rem;
+            line-height: 1.62;
+            font-weight: 500;
+        }
+
+        .container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 28px 20px 40px;
+        }
+
+        .trust-bar {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+            width: 100%;
+            max-width: 960px;
+            padding: 18px;
+            border-radius: 26px;
+            background: rgba(7, 21, 93, 0.5);
+            border: 1px solid rgba(193, 214, 255, 0.25);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), 0 14px 35px rgba(4, 12, 55, 0.3);
+            backdrop-filter: blur(10px);
+            margin-top: 8px;
+            z-index: 1;
+        }
+
+        .trust-item {
             display: flex;
             align-items: center;
+            gap: 12px;
+            justify-content: center;
+            padding: 16px 14px;
+            background: linear-gradient(145deg, rgba(255,255,255,0.2), rgba(255,255,255,0.08));
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            font-size: 0.92rem;
+            color: #f8fbff;
+            font-weight: 700;
+            box-shadow: 0 8px 24px rgba(7, 17, 74, 0.24);
         }
 
-        .container h2::before {
-            content: "⭐";
-            margin-right: 10px;
-            font-size: 24px;
+        .trust-item i {
+            color: #3ee6a8;
+            font-size: 1rem;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .container h2 {
+            margin: 0 0 24px;
+            font-size: clamp(2rem, 3vw, 2.6rem);
+            font-weight: 800;
+            color: var(--primary-blue);
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 28px;
+            box-shadow: 0 22px 50px rgba(15, 23, 42, 0.08);
+            overflow: hidden;
+            transition: transform 0.28s ease, box-shadow 0.28s ease;
+            display: flex;
+            flex-direction: column;
+            min-height: 420px;
+            border: 1px solid rgba(15, 23, 42, 0.05);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 28px 65px rgba(15, 23, 42, 0.12);
+        }
+
+        .hero-card {
+            grid-column: span 2;
+            transform: scale(1.02);
+        }
+
+        .hero-card .card-content {
+            padding-top: 24px;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--primary-blue);
+            border-radius: 999px;
+            font-weight: 700;
+            letter-spacing: 0.005em;
+            margin-bottom: 10px;
+            box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);
+        }
+
+        .hero-card:hover {
+            transform: translateY(-10px) scale(1.03);
+        }
+
+        .card-img {
+            position: relative;
+            height: 220px;
+            background: linear-gradient(180deg, #eef4ff 0%, #dfe8ff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+            color: white;
+            text-transform: uppercase;
+            z-index: 2;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.12);
+        }
+
+        .badge-best { background: #16a34a; }
+        .badge-premium { background: #7c3aed; }
+        .badge-budget { background: #475569; }
+
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.35s ease;
+        }
+
+        .card:hover .card-img img {
+            transform: scale(1.03);
+        }
+
+        .card-content {
+            padding: 22px 22px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            flex: 1;
+        }
+
+        .product-name {
+            margin: 0;
+            font-size: 1.16rem;
+            font-weight: 800;
+            line-height: 1.3;
+            color: var(--text-primary);
+        }
+
+        .product-description {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.96rem;
+            line-height: 1.65;
+        }
+
+        .product-price {
+            margin: 0;
+            color: var(--text-primary);
+            font-size: 0.98rem;
+            font-weight: 700;
+        }
+
+        .product-price span {
+            color: var(--accent-orange);
+        }
+
+        .card-actions {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: auto;
+        }
+
+        .card-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 16px;
+            border-radius: 16px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .card-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 22px rgba(15, 23, 42, 0.12);
+        }
+
+        .card-whatsapp {
+            background: #25d366;
+            color: white;
+        }
+
+        .card-whatsapp:hover {
+            background: #1fa852;
+        }
+
+        .card-call {
+            background: transparent;
+            color: var(--primary-blue);
+            border: 2px solid var(--primary-blue);
+        }
+
+        .card-call:hover {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            inset: 0;
+            background-color: rgba(10, 20, 50, 0.65);
+            padding: clamp(10px, 2vw, 20px);
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            width: min(460px, 100%);
+            max-height: min(88vh, 760px);
+            background-color: white;
+            border-radius: 20px;
+            padding: 20px 18px;
+            box-shadow: 0 30px 80px rgba(15, 23, 42, 0.18);
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            color: var(--primary-blue);
+            font-size: clamp(1.1rem, 2.2vw, 1.35rem);
+            line-height: 1.1;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #94a3b8;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            color: #334155;
+        }
+
+        .modal-img-wrapper {
+            display: grid;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .modal-img {
+            width: 100%;
+            height: clamp(160px, 34vh, 220px);
+            border-radius: 16px;
+            background: #f8fafc;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #94a3b8;
+            font-size: 48px;
+        }
+
+        .modal-img.has-photo {
+            background-color: #ffffff;
+        }
+
+        .modal-thumbnails {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+
+        .modal-thumbnails::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .modal-thumbnails::-webkit-scrollbar-thumb {
+            background: rgba(15, 23, 42, 0.18);
+            border-radius: 999px;
+        }
+
+        .modal-img {
+            transition: transform 0.35s ease;
+        }
+
+        .modal-img:hover {
+            transform: scale(1.02);
+        }
+
+        .modal-thumbnail {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            border: 2px solid transparent;
+            background-size: cover;
+            background-position: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: border-color 0.2s ease;
+        }
+
+        .modal-thumbnail.active {
+            border-color: var(--accent-orange);
+        }
+
+        .modal-details {
+            margin-top: 8px;
+        }
+
+        .modal-details p {
+            margin: 8px 0;
+            color: #475569;
+            line-height: 1.55;
+            font-size: 0.94rem;
+        }
+
+        .modal-price {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            margin: 10px 0;
+        }
+
+        .modal-features {
+            list-style: none;
+            padding: 0;
+            margin: 12px 0 0;
+            display: grid;
+            gap: 8px;
+        }
+
+        .modal-features li {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            color: #334155;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .modal-features li::before {
+            content: '✔';
+            color: var(--accent-orange);
+            margin-top: 3px;
+            font-size: 0.9rem;
+            line-height: 1;
+        }
+
+        .modal-actions {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 11px 14px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .modal-whatsapp {
+            background: #25d366;
+            color: white;
+        }
+
+        .modal-call {
+            background: var(--accent-orange);
+            color: white;
+        }
+
+        .modal-btn:hover {
+            opacity: 0.94;
+        }
+
+        .fab-container {
+            display: flex;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+        }
+
+        .fab-link {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .fab-whatsapp { display: none; }
+        .fab-call { background: #25d366; }
+
+        .fab-link:hover {
+            transform: scale(1.12);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.28);
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #64748b;
+        }
+
+        @media (max-width: 780px) {
+            .modal {
+                padding: 8px;
+            }
+
+            .header {
+                padding: 26px 14px 24px;
+            }
+
+            .header-top {
+                padding: 18px 14px;
+                border-radius: 22px;
+                gap: 12px;
+            }
+
+            .header-logo {
+                width: 72px;
+                height: 72px;
+                border-radius: 22px;
+            }
+
+            .header-title {
+                font-size: 1.7rem;
+                line-height: 1.15;
+            }
+
+            .header-subtitle {
+                font-size: 0.85rem;
+                line-height: 1.55;
+                max-width: 100%;
+            }
+
+            .container {
+                padding: 18px 14px 28px;
+            }
+
+            .trust-bar {
+                grid-template-columns: 1fr;
+                gap: 10px;
+                padding: 12px;
+                border-radius: 18px;
+            }
+
+            .trust-item {
+                justify-content: flex-start;
+                padding: 12px 13px;
+                border-radius: 12px;
+                font-size: 0.84rem;
+                gap: 10px;
+            }
+
+            .trust-item i {
+                font-size: 0.9rem;
+            }
+
+            .product-grid {
+                grid-template-columns: repeat(2, minmax(160px, 1fr));
+                gap: 16px;
+            }
+
+            .hero-card {
+                grid-column: auto;
+            }
+
+            .card {
+                min-height: 200px;
+            }
+
+            .card-img {
+                height: 160px;
+            }
+
+            .card-content {
+                padding: 10px 10px 10px;
+            }
+
+            .product-name {
+                font-size: 12px;
+            }
+
+            .product-description {
+                font-size: 9px;
+            }
+
+            .product-price {
+                font-size: 10px;
+            }
+
+            .card-actions {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .card-call {
+                display: none;
+            }
+
+            .card-btn {
+                font-size: 10px;
+                padding: 10px 10px;
+            }
+
+            .modal-content {
+                width: min(100%, 360px);
+                max-height: calc(100vh - 16px);
+                padding: 14px 12px;
+                border-radius: 16px;
+            }
+
+            .modal-header h2 {
+                font-size: 12px;
+            }
+
+            .modal-img {
+                height: 160px;
+            }
+
+            .modal-thumbnail {
+                width: 45px;
+                height: 45px;
+                border-radius: 10px;
+            }
+
+            .modal-price {
+                font-size: 18px;
+            }
+
+            .modal-details p:first-of-type {
+                font-size: 12px;
+            }
+
+            #modalProductDesc {
+                font-size: 10px;
+                font-weight: 700;
+            }
+
+            .modal-features li {
+                font-size: 10px;
+            }
+
+            .modal-btn {
+                font-size: 10px;
+                padding: 10px 12px;
+            }
         }
     </style>
 </head>
 <body>
 
     <div class="header">
-        <img src="1744871750011.jpg" alt="UNIQUZ SNAPBOX Logo" class="header-logo">
-        <div class="header-text">
-            <h1>UNIQUZ SNAPBOX</h1>
-            <p>Business Consultancy Services & Solutions</p>
+        <div class="header-inner">
+            <div class="header-top">
+                <img src="1744871750011.jpg" alt="UNIQUZ SNAPBOX Logo" class="header-logo">
+                <div class="header-text">
+                    <h1 class="header-title">Complete ID Card & Printing Solutions</h1>
+                    <p class="header-subtitle">Trusted by schools, offices and event organizers for premium printing, fast delivery, and bulk discounts.</p>
+                </div>
+            </div>
+            <div class="trust-bar">
+                <span class="trust-item"><i class="fas fa-check-circle"></i> 5000+ Orders Completed</span>
+                <span class="trust-item"><i class="fas fa-check-circle"></i> Bulk Discount Available</span>
+                <span class="trust-item"><i class="fas fa-check-circle"></i> Fast Delivery</span>
+            </div>
         </div>
     </div>
 
     <div class="container">
-        <h2 style="color: var(--primary-blue); border-left: 5px solid var(--accent-orange); padding-left: 15px;">Featured Products</h2>
-        <div class="product-grid">
-            <div class="card">
-                <div class="card-img photo">
-                    <img src="image/US-01-ID-Holder.jpg" alt="US-01 ID Holder">
-                </div>
-                <div class="card-content">
-                    <div class="product-id">US-01</div>
-                    <div class="product-name">ID Holder</div>
-                    <div class="product-price">₹5</div>
-                    <div class="card-actions">
-                        <a href="https://wa.me/917099481497?text=I'm interested in US-01 ID Holder" class="card-btn card-whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                        <a href="tel:+917099481497" class="card-btn card-call" title="Call"><i class="fas fa-phone"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-img photo">
-                    <img src="image/US-02- PRMEIUM OLDER ₹50.jpg" alt="US-02 ID Holder Premium">
-                </div>
-                <div class="card-content">
-                    <div class="product-id">US-02</div>
-                    <div class="product-name">ID Holder Premium</div>
-                    <div class="product-price">₹5</div>
-                    <div class="card-actions">
-                        <a href="https://wa.me/917099481497?text=I'm interested in US-02 ID Holder Premium" class="card-btn card-whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                        <a href="tel:+917099481497" class="card-btn card-call" title="Call"><i class="fas fa-phone"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-img">PRODUCT IMAGE</div>
-                <div class="card-content">
-                    <div class="product-id">US-03</div>
-                    <div class="product-name">AC Printed</div>
-                    <div class="product-price">₹6</div>
-                    <div class="card-actions">
-                        <a href="https://wa.me/917099481497?text=I'm interested in US-03 AC Printed" class="card-btn card-whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                        <a href="tel:+917099481497" class="card-btn card-call" title="Call"><i class="fas fa-phone"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-img">PRODUCT IMAGE</div>
-                <div class="card-content">
-                    <div class="product-id">US-09</div>
-                    <div class="product-name">Holder</div>
-                    <div class="product-price">₹4</div>
-                    <div class="card-actions">
-                        <a href="https://wa.me/917099481497?text=I'm interested in US-09 Holder" class="card-btn card-whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                        <a href="tel:+917099481497" class="card-btn card-call" title="Call"><i class="fas fa-phone"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-img">PRODUCT IMAGE</div>
-                <div class="card-content">
-                    <div class="product-id">US-MRH</div>
-                    <div class="product-name">Metal Red Holder</div>
-                    <div class="product-price">₹30</div>
-                    <div class="card-actions">
-                        <a href="https://wa.me/917099481497?text=I'm interested in US-MRH Metal Red Holder" class="card-btn card-whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                        <a href="tel:+917099481497" class="card-btn card-call" title="Call"><i class="fas fa-phone"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-img">PRODUCT IMAGE</div>
-                <div class="card-content">
-                    <div class="product-id">US-KC</div>
-                    <div class="product-name">Key Chain</div>
-                    <div class="product-price">₹19</div>
-                    <div class="card-actions">
-                        <a href="https://wa.me/917099481497?text=I'm interested in US-KC Key Chain" class="card-btn card-whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                        <a href="tel:+917099481497" class="card-btn card-call" title="Call"><i class="fas fa-phone"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-img">PRODUCT IMAGE</div>
-                <div class="card-content">
-                    <div class="product-id">US-PVC</div>
-                    <div class="product-name">Normal PVC Card</div>
-                    <div class="product-price">₹30</div>
-                    <div class="card-actions">
-                        <a href="https://wa.me/917099481497?text=I'm interested in US-PVC Normal PVC Card" class="card-btn card-whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                        <a href="tel:+917099481497" class="card-btn card-call" title="Call"><i class="fas fa-phone"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-img">PRODUCT IMAGE</div>
-                <div class="card-content">
-                    <div class="product-id">US-MPC</div>
-                    <div class="product-name">Modern PVC Card</div>
-                    <div class="product-price">₹200</div>
-                    <div class="card-actions">
-                        <a href="https://wa.me/917099481497?text=I'm interested in US-MPC Modern PVC Card" class="card-btn card-whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                        <a href="tel:+917099481497" class="card-btn card-call" title="Call"><i class="fas fa-phone"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-img">PRODUCT IMAGE</div>
-                <div class="card-content">
-                    <div class="product-id">US-04</div>
-                    <div class="product-name">Premium Badge</div>
-                    <div class="product-price">₹12</div>
-                    <div class="card-actions">
-                        <a href="https://wa.me/917099481497?text=I'm interested in US-04 Premium Badge" class="card-btn card-whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                        <a href="tel:+917099481497" class="card-btn card-call" title="Call"><i class="fas fa-phone"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-img">PRODUCT IMAGE</div>
-                <div class="card-content">
-                    <div class="product-id">US-05</div>
-                    <div class="product-name">Lanyard</div>
-                    <div class="product-price">₹8</div>
-                    <div class="card-actions">
-                        <a href="https://wa.me/917099481497?text=I'm interested in US-05 Lanyard" class="card-btn card-whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                        <a href="tel:+917099481497" class="card-btn card-call" title="Call"><i class="fas fa-phone"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-img">PRODUCT IMAGE</div>
-                <div class="card-content">
-                    <div class="product-id">US-06</div>
-                    <div class="product-name">Business Card</div>
-                    <div class="product-price">₹2</div>
-                    <div class="card-actions">
-                        <a href="https://wa.me/917099481497?text=I'm interested in US-06 Business Card" class="card-btn card-whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                        <a href="tel:+917099481497" class="card-btn card-call" title="Call"><i class="fas fa-phone"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-img">PRODUCT IMAGE</div>
-                <div class="card-content">
-                    <div class="product-id">US-07</div>
-                    <div class="product-name">Sticker Set</div>
-                    <div class="product-price">₹10</div>
-                    <div class="card-actions">
-                        <a href="https://wa.me/917099481497?text=I'm interested in US-07 Sticker Set" class="card-btn card-whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                        <a href="tel:+917099481497" class="card-btn card-call" title="Call"><i class="fas fa-phone"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-img">PRODUCT IMAGE</div>
-                <div class="card-content">
-                    <div class="product-id">US-08</div>
-                    <div class="product-name">T-Shirt Print</div>
-                    <div class="product-price">₹50</div>
-                    <div class="card-actions">
-                        <a href="https://wa.me/917099481497?text=I'm interested in US-08 T-Shirt Print" class="card-btn card-whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                        <a href="tel:+917099481497" class="card-btn card-call" title="Call"><i class="fas fa-phone"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-img">PRODUCT IMAGE</div>
-                <div class="card-content">
-                    <div class="product-id">US-10</div>
-                    <div class="product-name">Certificate</div>
-                    <div class="product-price">₹15</div>
-                    <div class="card-actions">
-                        <a href="https://wa.me/917099481497?text=I'm interested in US-10 Certificate" class="card-btn card-whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                        <a href="tel:+917099481497" class="card-btn card-call" title="Call"><i class="fas fa-phone"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-img">PRODUCT IMAGE</div>
-                <div class="card-content">
-                    <div class="product-id">US-11</div>
-                    <div class="product-name">Brochure</div>
-                    <div class="product-price">₹7</div>
-                    <div class="card-actions">
-                        <a href="https://wa.me/917099481497?text=I'm interested in US-11 Brochure" class="card-btn card-whatsapp" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                        <a href="tel:+917099481497" class="card-btn card-call" title="Call"><i class="fas fa-phone"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <h2>Featured Products</h2>
+        <div class="product-grid" id="productGrid"></div>
     </div>
 
     <!-- Product Modal -->
@@ -345,11 +756,15 @@
                 <h2 id="modalProductName"></h2>
                 <button class="modal-close" onclick="closeModal()">&times;</button>
             </div>
-            <div class="modal-img" id="modalProductImg"></div>
+            <div class="modal-img-wrapper">
+                <div class="modal-img" id="modalProductImg"></div>
+                <div class="modal-thumbnails" id="modalProductThumbs"></div>
+            </div>
             <div class="modal-details">
                 <p><strong>Product ID:</strong> <span id="modalProductId"></span></p>
                 <div class="modal-price" id="modalProductPrice"></div>
-                <p id="modalProductDesc" style="color: #888; font-size: 14px; margin-top: 10px;"></p>
+                <p id="modalProductDesc"></p>
+                <ul class="modal-features" id="modalFeatures"></ul>
             </div>
             <div class="modal-actions">
                 <a href="#" id="modalWhatsApp" class="modal-btn modal-whatsapp" target="_blank">
@@ -363,10 +778,10 @@
     </div>
 
     <div class="fab-container">
-        <a href="https://wa.me/917099481497" class="fab fab-whatsapp" title="WhatsApp Us">
+        <a href="https://wa.me/917099481497" class="fab-link fab-whatsapp" title="WhatsApp Us">
             <i class="fab fa-whatsapp"></i>
         </a>
-        <a href="tel:+917099481497" class="fab fab-call" title="Call Us">
+        <a href="tel:+917099481497" class="fab-link fab-call" title="Call Us">
             <i class="fas fa-phone-alt"></i>
         </a>
     </div>
@@ -376,92 +791,297 @@
     </footer>
 
     <script>
-        const products = {
-            'US-01': { name: 'ID Holder', price: '₹5', desc: 'Professional ID holder for workplace identification', image: 'image/US-01-ID-Holder.jpg' },
-            'US-02': { name: 'ID Holder Premium', price: '₹5', desc: 'Premium quality ID holder with enhanced durability', image: 'image/US-02- PRMEIUM OLDER ₹50.jpg' },
-            'US-03': { name: 'AC Printed', price: '₹6', desc: 'AC printed material for air conditioning installations' },
-            'US-09': { name: 'Holder', price: '₹4', desc: 'Basic multipurpose holder' },
-            'US-MRH': { name: 'Metal Red Holder', price: '₹30', desc: 'Stylish metal red holder for premium branding' },
-            'US-KC': { name: 'Key Chain', price: '₹19', desc: 'Custom branded key chain accessory' },
-            'US-PVC': { name: 'Normal PVC Card', price: '₹30', desc: 'Standard PVC card for identification' },
-            'US-MPC': { name: 'Modern PVC Card', price: '₹200', desc: 'Advanced modern PVC card with special features' },
-            'US-04': { name: 'Premium Badge', price: '₹12', desc: 'Premium quality badge for professional use' },
-            'US-05': { name: 'Lanyard', price: '₹8', desc: 'Durable lanyard for ID card attachment' },
-            'US-06': { name: 'Business Card', price: '₹2', desc: 'Professional printed business card' },
-            'US-07': { name: 'Sticker Set', price: '₹10', desc: 'Custom branded sticker collection' },
-            'US-08': { name: 'T-Shirt Print', price: '₹50', desc: 'Premium quality t-shirt with custom print' },
-            'US-10': { name: 'Certificate', price: '₹15', desc: 'Professional printed certificate' },
-            'US-11': { name: 'Brochure', price: '₹7', desc: 'Tri-fold marketing brochure' }
+        const productNames = {
+            "LANYWARD": "Lanyard",
+            "COMPLEATE ID CARD": "Complete ID Card Kit",
+            "MATEL HOLDER": "Metal Holder",
+            "PLASTIC HOLDER": "Plastic Holder",
+            "PVC CARD": "PVC ID Card",
+            "STICKER": "Notebook Labels",
+            "KEY CHAIN": "Key Chain",
+            "USB HOLDER": "USB Holder",
+            "BATCH": "Badge Set",
+            "HOLDER": "ID Holder"
         };
 
-        function openModal(productId) {
-            const product = products[productId];
-            if (!product) return;
-            
-            const modalImg = document.getElementById('modalProductImg');
+        const productData = {
+            "LANYWARD": {
+                price: "Starting ₹10",
+                badge: "Best Seller",
+                features: ["Strong Fabric", "Custom Print", "Durable Hook"]
+            },
+            "PVC CARD": {
+                price: "Starting ₹30",
+                badge: "Premium",
+                features: ["Waterproof", "HD Print", "Long Lasting"]
+            },
+            "HOLDER": {
+                price: "Starting ₹5",
+                badge: "Budget",
+                features: ["Lightweight", "Durable", "Daily Use"]
+            }
+        };
 
-            document.getElementById('modalProductName').textContent = product.name;
-            document.getElementById('modalProductId').textContent = productId;
-            document.getElementById('modalProductPrice').textContent = product.price;
-            document.getElementById('modalProductDesc').textContent = product.desc;
+        const defaultProductInfo = {
+            price: 'Starting ₹5 | Bulk Available',
+            badge: null,
+            features: ['Durable Material', 'Custom Printing Available', 'Bulk Orders Supported']
+        };
 
-            if (product.image) {
+        const getProductInfo = productId => ({
+            ...defaultProductInfo,
+            ...(productData[productId] || {})
+        });
+
+        const encodeImagePath = path => encodeURI(path);
+        const getProductName = folderId => productNames[folderId] || folderId;
+        const buildWhatsAppLink = productName => `https://wa.me/917099481497?text=${encodeURIComponent(`Hi, I want to order:\nProduct: ${productName}\nPlease share price & details.`)}`;
+
+        const products = [
+            {
+                id: 'BATCH',
+                name: productNames['BATCH'],
+                price: '₹20+',
+                desc: 'Badge and premium card holders with multiple styles.',
+                images: [
+                    'image/BATCH/Badge_button_premium_202604050109.jpeg',
+                    'image/BATCH/Similar_product_premium_202604050110.jpeg',
+                    'image/BATCH/Similar_product_premium_202604050111.jpeg',
+                    'image/BATCH/Similar_product_premium_202604050112 (1).jpeg',
+                    'image/BATCH/Similar_product_premium_202604050112.jpeg'
+                ]
+            },
+            {
+                id: 'COMPLEATE ID CARD',
+                name: productNames['COMPLEATE ID CARD'],
+                price: '₹40',
+                desc: 'Complete ID card set with multiple photos and styles.',
+                images: [
+                    'image/COMPLEATE ID CARD/ID_card_holder_202604050219 (1).jpeg',
+                    'image/COMPLEATE ID CARD/ID_card_holder_202604050219 (2).jpeg',
+                    'image/COMPLEATE ID CARD/ID_card_holder_202604050219.jpeg'
+                ]
+            },
+            {
+                id: 'HOLDER',
+                name: productNames['HOLDER'],
+                price: '₹4',
+                desc: 'Multiple ID holder photos from the holder category.',
+                images: [
+                    'image/HOLDER/ID_card_holder_202604050233 (1).jpeg',
+                    'image/HOLDER/ID_card_holder_202604050233 (2).jpeg',
+                    'image/HOLDER/ID_card_holder_202604050233.jpeg'
+                ]
+            },
+            {
+                id: 'KEY CHAIN',
+                name: productNames['KEY CHAIN'],
+                price: '₹19',
+                desc: 'Colorful keychain set shown in different angles.',
+                images: [
+                    'image/KEY CHAIN/deferent_colour_or_202604050043.jpeg',
+                    'image/KEY CHAIN/deferent_colour_or_202604050043 (1).jpeg',
+                    'image/KEY CHAIN/deferent_colour_or_202604050043 (2).jpeg',
+                    'image/KEY CHAIN/Lanyards_with_color_202604050042.jpeg'
+                ]
+            },
+            {
+                id: 'LANYWARD',
+                name: productNames['LANYWARD'],
+                price: '₹30',
+                desc: 'Different lanyard designs with multiple photos.',
+                images: [
+                    'image/LANYWARD/Single_blue_lanyard_202604050228.jpeg',
+                    'image/LANYWARD/isko_lanyward_white_202604050230.jpeg',
+                    'image/LANYWARD/isko_lanyward_white_202604050230 (1).jpeg',
+                    'image/LANYWARD/3_different_lanyard_202604050230.jpeg'
+                ]
+            },
+            {
+                id: 'MATEL HOLDER',
+                name: productNames['MATEL HOLDER'],
+                price: '₹30',
+                desc: 'Metal holder collection with multiple image options.',
+                images: [
+                    'image/MATEL HOLDER/ID_card_holder_202604050017.jpeg',
+                    'image/MATEL HOLDER/ID_card_holder_202604050018.jpeg',
+                    'image/MATEL HOLDER/Multiple_ID_card_202604050017.jpeg'
+                ]
+            },
+            {
+                id: 'PLASTIC HOLDER',
+                name: productNames['PLASTIC HOLDER'],
+                price: '₹20',
+                desc: 'Plastic ID holder product with multiple photos.',
+                images: [
+                    'image/PLASTIC HOLDER/ID_card_holder_202604050023.jpeg',
+                    'image/PLASTIC HOLDER/ID_card_holder_202604050023 (1).jpeg',
+                    'image/PLASTIC HOLDER/Multiple_ID_card_202604050024.jpeg',
+                    'image/PLASTIC HOLDER/Red_yellow_card_202604050024.jpeg'
+                ]
+            },
+            {
+                id: 'PVC CARD',
+                name: productNames['PVC CARD'],
+                price: '₹20',
+                desc: 'PVC card selection with pictured samples.',
+                images: [
+                    'image/PVC CARD/PVC_ID_card_202604050047.jpeg',
+                    'image/PVC CARD/PVC_ID_card_202604050050.jpeg',
+                    'image/PVC CARD/PVC_ID_card_202604050056.jpeg'
+                ]
+            },
+            {
+                id: 'STICKER',
+                name: productNames['STICKER'],
+                price: '₹10',
+                desc: 'Sticker designs and label examples in multiple images.',
+                images: [
+                    'image/STICKER/Generate_cartoon_notebook_202604050125.jpeg',
+                    'image/STICKER/Generate_cartoon_notebook_202604050125 (1).jpeg',
+                    'image/STICKER/Notebook_labels_for_202604050126.jpeg',
+                    'image/STICKER/similar_sticker_but_202604050120.jpeg',
+                    'image/STICKER/similar_sticker_but_202604050120 (1).jpeg'
+                ]
+            },
+            {
+                id: 'USB HOLDER',
+                name: productNames['USB HOLDER'],
+                price: '₹25',
+                desc: 'USB holder product photos from the folder.',
+                images: [
+                    'image/USB HOLDER/photo_remove_quality_202604050210.jpeg',
+                    'image/USB HOLDER/photo_remove_quality_202604050211.jpeg'
+                ]
+            }
+        ];
+
+        const productGrid = document.getElementById('productGrid');
+        const modalImg = document.getElementById('modalProductImg');
+        const modalThumbs = document.getElementById('modalProductThumbs');
+        const modalProductName = document.getElementById('modalProductName');
+        const modalProductId = document.getElementById('modalProductId');
+        const modalProductPrice = document.getElementById('modalProductPrice');
+        const modalProductDesc = document.getElementById('modalProductDesc');
+        const modalWhatsApp = document.getElementById('modalWhatsApp');
+        const modalCall = document.getElementById('modalCall');
+        const modalFeaturesList = document.getElementById('modalFeatures');
+
+        const updateModalImage = src => {
+            if (src) {
                 modalImg.classList.add('has-photo');
-                modalImg.style.backgroundImage = `url('${product.image}')`;
+                modalImg.style.backgroundImage = `url("${encodeImagePath(src)}")`;
                 modalImg.textContent = '';
             } else {
                 modalImg.classList.remove('has-photo');
                 modalImg.style.backgroundImage = '';
-                modalImg.textContent = '';
+                modalImg.textContent = 'No photo available';
             }
-            
-            const waMessage = `I'm interested in ${productId} ${product.name}`;
-            document.getElementById('modalWhatsApp').href = `https://wa.me/917099481497?text=${encodeURIComponent(waMessage)}`;
-            document.getElementById('modalCall').href = 'tel:+917099481497';
-            
+        };
+
+        const renderThumbnails = imageList => {
+            modalThumbs.innerHTML = '';
+            if (!imageList || imageList.length <= 1) {
+                modalThumbs.style.display = 'none';
+                return;
+            }
+            modalThumbs.style.display = 'flex';
+
+            imageList.forEach((src, index) => {
+                const thumb = document.createElement('button');
+                thumb.type = 'button';
+                thumb.className = `modal-thumbnail${index === 0 ? ' active' : ''}`;
+                thumb.style.backgroundImage = `url("${encodeImagePath(src)}")`;
+                thumb.addEventListener('click', () => {
+                    updateModalImage(src);
+                    modalThumbs.querySelectorAll('.modal-thumbnail').forEach((item, idx) => {
+                        item.classList.toggle('active', idx === index);
+                    });
+                });
+                modalThumbs.appendChild(thumb);
+            });
+        };
+
+        const openModal = productId => {
+            const product = products.find(item => item.id === productId);
+            if (!product) return;
+
+            const productName = getProductName(product.id);
+            const productInfo = getProductInfo(product.id);
+            modalProductName.textContent = productName;
+            modalProductId.textContent = product.id;
+            modalProductPrice.textContent = productInfo.price;
+            modalProductDesc.textContent = product.desc;
+
+            const images = product.images || [];
+            renderThumbnails(images);
+            updateModalImage(images[0]);
+            modalFeaturesList.innerHTML = productInfo.features.map(feature => `<li>${feature}</li>`).join('');
+
+            modalWhatsApp.href = buildWhatsAppLink(productName);
+            modalCall.href = 'tel:+917099481497';
             document.body.classList.add('modal-open');
             document.getElementById('productModal').classList.add('active');
-        }
+        };
 
-        function closeModal() {
+        const closeModal = () => {
             document.getElementById('productModal').classList.remove('active');
             document.body.classList.remove('modal-open');
-        }
+        };
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll('.card');
-            let lastTouchTime = 0;
+        const createCard = (product, index) => {
+            const productName = getProductName(product.id);
+            const productInfo = getProductInfo(product.id);
 
-            const openFromCard = (card) => {
-                const productIdEl = card.querySelector('.product-id');
-                if (!productIdEl) return;
-                openModal(productIdEl.textContent.trim());
-            };
+            const card = document.createElement('article');
+            card.className = 'card';
+            if (index === 0) {
+                card.classList.add('hero-card');
+            }
+            card.addEventListener('click', () => openModal(product.id));
 
-            cards.forEach(card => {
-                card.addEventListener('touchstart', function() {
-                    lastTouchTime = Date.now();
-                    openFromCard(this);
-                }, { passive: true });
+            const imageWrapper = document.createElement('div');
+            imageWrapper.className = 'card-img photo';
+            const img = document.createElement('img');
+            img.src = encodeImagePath(product.images[0] || '');
+            img.alt = productName;
+            imageWrapper.appendChild(img);
 
-                card.addEventListener('click', function() {
-                    if (Date.now() - lastTouchTime < 350) return;
-                    openFromCard(this);
-                });
+            if (productInfo.badge) {
+                const badge = document.createElement('span');
+                badge.className = `card-badge ${productInfo.badge === 'Best Seller' ? 'badge-best' : productInfo.badge === 'Premium' ? 'badge-premium' : 'badge-budget'}`;
+                badge.textContent = productInfo.badge;
+                imageWrapper.appendChild(badge);
+            }
+
+            const content = document.createElement('div');
+            content.className = 'card-content';
+            content.innerHTML = `
+                ${index === 0 ? '<span class="hero-tag"><i class="fas fa-star"></i> Recommended</span>' : ''}
+                <h3 class="product-name">${productName}</h3>
+                <p class="product-description">${product.desc}</p>
+                <p class="product-price"><span>${productInfo.price}</span></p>
+                <div class="card-actions">
+                    <a href="${buildWhatsAppLink(productName)}" class="card-btn card-whatsapp" target="_blank">Order Now</a>
+                    <a href="tel:+917099481497" class="card-btn card-call">Call Now</a>
+                </div>
+            `;
+
+            content.querySelectorAll('.card-actions a').forEach(link => {
+                link.addEventListener('click', event => event.stopPropagation());
+                link.addEventListener('touchstart', event => event.stopPropagation(), { passive: true });
             });
 
-            const actionLinks = document.querySelectorAll('.card-actions a');
-            actionLinks.forEach(link => {
-                link.addEventListener('click', function(event) {
-                    event.stopPropagation();
-                });
-                link.addEventListener('touchstart', function(event) {
-                    event.stopPropagation();
-                }, { passive: true });
-            });
+            card.appendChild(imageWrapper);
+            card.appendChild(content);
+            return card;
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            products.forEach((product, index) => productGrid.appendChild(createCard(product, index)));
         });
 
-        window.addEventListener('click', function(event) {
+        window.addEventListener('click', event => {
             const modal = document.getElementById('productModal');
             if (event.target === modal) {
                 closeModal();
