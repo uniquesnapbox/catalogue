@@ -6,7 +6,7 @@
     <title>UNIQUZ SNAPBOX - Product Catalog</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -26,7 +26,7 @@
         body {
             margin: 0;
             min-height: 100vh;
-            font-family: 'Sora', 'Segoe UI', sans-serif;
+            font-family: 'Plus Jakarta Sans', 'Segoe UI', sans-serif;
             background: var(--bg-light);
             color: var(--text-primary);
         }
@@ -108,19 +108,20 @@
 
         .header-title {
             margin: 0;
-            font-size: clamp(2.1rem, 4vw, 3rem);
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(1.62rem, 3vw, 2.3rem);
             line-height: 1.1;
             letter-spacing: -0.01em;
-            font-weight: 800;
+            font-weight: 700;
             text-shadow: 0 4px 20px rgba(8, 14, 50, 0.35);
         }
 
         .header-subtitle {
             margin: 0;
             color: rgba(237, 244, 255, 0.95);
-            font-size: 1rem;
-            line-height: 1.62;
-            font-weight: 500;
+            font-size: 0.86rem;
+            line-height: 1.5;
+            font-weight: 600;
         }
 
         .container {
@@ -130,12 +131,10 @@
         }
 
         .trust-bar {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 14px;
+            position: relative;
             width: 100%;
             max-width: 960px;
-            padding: 18px;
+            padding: 12px;
             border-radius: 26px;
             background: rgba(7, 21, 93, 0.5);
             border: 1px solid rgba(193, 214, 255, 0.25);
@@ -143,6 +142,53 @@
             backdrop-filter: blur(10px);
             margin-top: 8px;
             z-index: 1;
+            overflow: hidden;
+        }
+
+        .trust-bar::before,
+        .trust-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 52px;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .trust-bar::before {
+            left: 0;
+            background: linear-gradient(90deg, rgba(18, 39, 132, 0.95), rgba(18, 39, 132, 0));
+        }
+
+        .trust-bar::after {
+            right: 0;
+            background: linear-gradient(270deg, rgba(50, 79, 182, 0.9), rgba(50, 79, 182, 0));
+        }
+
+        .trust-viewport {
+            width: 100%;
+            overflow: hidden;
+            padding: 0;
+        }
+
+        .trust-track {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: max-content;
+            flex-shrink: 0;
+            will-change: transform;
+            animation: trust-scroll 18s linear infinite;
+        }
+
+        @keyframes trust-scroll {
+            from {
+                transform: translateX(-50%);
+            }
+            to {
+                transform: translateX(0);
+            }
         }
 
         .trust-item {
@@ -150,19 +196,26 @@
             align-items: center;
             gap: 12px;
             justify-content: center;
-            padding: 16px 14px;
+            padding: 12px 16px;
             background: linear-gradient(145deg, rgba(255,255,255,0.2), rgba(255,255,255,0.08));
             border-radius: 16px;
             border: 1px solid rgba(255, 255, 255, 0.18);
-            font-size: 0.92rem;
+            font-size: 0.76rem;
             color: #f8fbff;
-            font-weight: 700;
+            font-weight: 800;
             box-shadow: 0 8px 24px rgba(7, 17, 74, 0.24);
+            white-space: nowrap;
         }
 
         .trust-item i {
             color: #3ee6a8;
             font-size: 1rem;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .trust-track {
+                animation: none;
+            }
         }
 
         .product-grid {
@@ -362,12 +415,12 @@
         }
 
         .modal-content {
-            width: min(460px, 100%);
-            max-height: min(88vh, 760px);
-            background-color: white;
-            border-radius: 20px;
-            padding: 20px 18px;
-            box-shadow: 0 30px 80px rgba(15, 23, 42, 0.18);
+            width: min(760px, 100%);
+            max-height: min(92vh, 820px);
+            background-color: #ffffff;
+            border-radius: 26px;
+            padding: 18px 16px 20px;
+            box-shadow: 0 32px 85px rgba(15, 23, 42, 0.2);
             overflow-y: auto;
         }
 
@@ -401,37 +454,46 @@
 
         .modal-img-wrapper {
             display: grid;
-            gap: 10px;
-            margin-bottom: 14px;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: stretch;
+            gap: 12px;
+            margin-bottom: 16px;
         }
 
         .modal-img {
             width: 100%;
-            height: clamp(160px, 34vh, 220px);
-            border-radius: 16px;
-            background: #f8fafc;
+            height: clamp(260px, 45vh, 460px);
+            border-radius: 22px;
+            background: #f1f3f6;
             background-size: cover;
             background-position: center;
+            background-repeat: no-repeat;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #94a3b8;
             font-size: 48px;
+            border: 1px solid #e2e8f0;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92);
         }
 
         .modal-img.has-photo {
-            background-color: #ffffff;
+            background-color: #f1f3f6;
         }
 
         .modal-thumbnails {
             display: flex;
-            gap: 10px;
-            overflow-x: auto;
-            padding-bottom: 4px;
+            flex-direction: column;
+            gap: 11px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            max-height: clamp(260px, 45vh, 460px);
+            padding: 2px 4px 2px 2px;
+            scroll-snap-type: y proximity;
         }
 
         .modal-thumbnails::-webkit-scrollbar {
-            height: 6px;
+            width: 6px;
         }
 
         .modal-thumbnails::-webkit-scrollbar-thumb {
@@ -444,23 +506,39 @@
         }
 
         .modal-img:hover {
-            transform: scale(1.02);
+            transform: scale(1.01);
         }
 
         .modal-thumbnail {
-            width: 56px;
-            height: 56px;
-            border-radius: 12px;
-            border: 2px solid transparent;
+            width: 86px;
+            height: 86px;
+            border-radius: 16px;
+            border: 2px solid #dbe1ea;
             background-size: cover;
             background-position: center;
+            background-repeat: no-repeat;
+            background-color: #f1f3f6;
             cursor: pointer;
             flex-shrink: 0;
-            transition: border-color 0.2s ease;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+            box-shadow: 0 6px 15px rgba(15, 23, 42, 0.11);
+            scroll-snap-align: start;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .modal-thumbnail.active {
             border-color: var(--accent-orange);
+            background-color: #ffffff;
+            box-shadow: 0 10px 18px rgba(255, 122, 32, 0.18);
+        }
+
+        .modal-thumbnail:hover {
+            transform: translateY(-2px);
+        }
+
+        .modal-thumbnail:focus-visible {
+            outline: 2px solid rgba(255, 122, 32, 0.45);
+            outline-offset: 2px;
         }
 
         .modal-details {
@@ -472,6 +550,36 @@
             color: #475569;
             line-height: 1.55;
             font-size: 0.94rem;
+        }
+
+        .modal-variants {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 8px 0 10px;
+        }
+
+        .variant-chip {
+            border: 1px solid #c7d2fe;
+            background: #eef2ff;
+            color: #1e3a8a;
+            border-radius: 999px;
+            padding: 7px 12px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .variant-chip:hover {
+            background: #dbeafe;
+        }
+
+        .variant-chip.active {
+            background: var(--accent-orange);
+            border-color: var(--accent-orange);
+            color: white;
+            box-shadow: 0 8px 18px rgba(255, 122, 32, 0.26);
         }
 
         .modal-price {
@@ -600,13 +708,13 @@
             }
 
             .header-title {
-                font-size: 1.7rem;
-                line-height: 1.15;
+                font-size: 1.32rem;
+                line-height: 1.1;
             }
 
             .header-subtitle {
-                font-size: 0.85rem;
-                line-height: 1.55;
+                font-size: 0.7rem;
+                line-height: 1.45;
                 max-width: 100%;
             }
 
@@ -615,22 +723,30 @@
             }
 
             .trust-bar {
-                grid-template-columns: 1fr;
-                gap: 10px;
                 padding: 12px;
                 border-radius: 18px;
             }
 
-            .trust-item {
-                justify-content: flex-start;
-                padding: 12px 13px;
-                border-radius: 12px;
-                font-size: 0.84rem;
+            .trust-bar::before,
+            .trust-bar::after {
+                width: 30px;
+            }
+
+            .trust-track {
                 gap: 10px;
+                animation-duration: 15s;
+            }
+
+            .trust-item {
+                justify-content: center;
+                padding: 10px 12px;
+                border-radius: 12px;
+                font-size: 0.68rem;
+                gap: 8px;
             }
 
             .trust-item i {
-                font-size: 0.9rem;
+                font-size: 0.82rem;
             }
 
             .product-grid {
@@ -681,24 +797,45 @@
             }
 
             .modal-content {
-                width: min(100%, 360px);
+                width: min(100%, 460px);
                 max-height: calc(100vh - 16px);
-                padding: 14px 12px;
-                border-radius: 16px;
+                padding: 13px 11px 14px;
+                border-radius: 20px;
             }
 
             .modal-header h2 {
                 font-size: 12px;
             }
 
+            .modal-img-wrapper {
+                grid-template-columns: minmax(0, 1fr) auto;
+                gap: 10px;
+            }
+
             .modal-img {
-                height: 160px;
+                height: clamp(220px, 42vh, 320px);
+                background-size: cover;
+            }
+
+            .modal-thumbnails {
+                flex-direction: column;
+                overflow-y: auto;
+                overflow-x: hidden;
+                max-height: clamp(220px, 42vh, 320px);
+                padding: 2px 4px 2px 2px;
+                scroll-snap-type: y proximity;
+            }
+
+            .modal-thumbnails::-webkit-scrollbar {
+                width: 6px;
+                height: auto;
             }
 
             .modal-thumbnail {
-                width: 45px;
-                height: 45px;
-                border-radius: 10px;
+                width: 66px;
+                height: 66px;
+                border-radius: 12px;
+                background-size: cover;
             }
 
             .modal-price {
@@ -707,6 +844,16 @@
 
             .modal-details p:first-of-type {
                 font-size: 12px;
+            }
+
+            .modal-variants {
+                gap: 6px;
+                margin: 6px 0 8px;
+            }
+
+            .variant-chip {
+                font-size: 0.66rem;
+                padding: 6px 10px;
             }
 
             #modalProductDesc {
@@ -737,9 +884,16 @@
                 </div>
             </div>
             <div class="trust-bar">
-                <span class="trust-item"><i class="fas fa-check-circle"></i> 5000+ Orders Completed</span>
-                <span class="trust-item"><i class="fas fa-check-circle"></i> Bulk Discount Available</span>
-                <span class="trust-item"><i class="fas fa-check-circle"></i> Fast Delivery</span>
+                <div class="trust-viewport">
+                    <div class="trust-track">
+                        <span class="trust-item"><i class="fas fa-check-circle"></i> 5000+ Orders Completed</span>
+                        <span class="trust-item"><i class="fas fa-check-circle"></i> Bulk Discount Available</span>
+                        <span class="trust-item"><i class="fas fa-check-circle"></i> Fast Delivery</span>
+                        <span class="trust-item" aria-hidden="true"><i class="fas fa-check-circle"></i> 5000+ Orders Completed</span>
+                        <span class="trust-item" aria-hidden="true"><i class="fas fa-check-circle"></i> Bulk Discount Available</span>
+                        <span class="trust-item" aria-hidden="true"><i class="fas fa-check-circle"></i> Fast Delivery</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -762,6 +916,7 @@
             </div>
             <div class="modal-details">
                 <p><strong>Product ID:</strong> <span id="modalProductId"></span></p>
+                <div class="modal-variants" id="modalVariants"></div>
                 <div class="modal-price" id="modalProductPrice"></div>
                 <p id="modalProductDesc"></p>
                 <ul class="modal-features" id="modalFeatures"></ul>
@@ -793,7 +948,7 @@
     <script>
         const productNames = {
             "LANYWARD": "Lanyard",
-            "COMPLEATE ID CARD": "Complete ID Card Kit",
+            "COMPLEATE ID CARD": "Complete ID Card",
             "MATEL HOLDER": "Metal Holder",
             "PLASTIC HOLDER": "Plastic Holder",
             "PVC CARD": "PVC ID Card",
@@ -805,25 +960,54 @@
         };
 
         const productData = {
-            "LANYWARD": {
-                price: "Starting ₹10",
-                badge: "Best Seller",
-                features: ["Strong Fabric", "Custom Print", "Durable Hook"]
+            "BATCH": {
+                price: "Rs.10",
+                features: ["Multiple styles", "Bulk orders supported", "Durable material"]
             },
-            "PVC CARD": {
-                price: "Starting ₹30",
-                badge: "Premium",
-                features: ["Waterproof", "HD Print", "Long Lasting"]
+            "COMPLEATE ID CARD": {
+                price: "Rs.25-Rs.45",
+                features: [
+                    "Two options available",
+                    "PVC card with quality plastic holder",
+                    "Select option to view exact photos and price"
+                ]
             },
             "HOLDER": {
-                price: "Starting ₹5",
-                badge: "Budget",
+                price: "Rs.5",
                 features: ["Lightweight", "Durable", "Daily Use"]
+            },
+            "KEY CHAIN": {
+                price: "Rs.12",
+                features: ["Color options", "Durable print", "Daily use"]
+            },
+            "LANYWARD": {
+                price: "Rs.18",
+                features: ["Strong Fabric", "Custom Print", "Durable Hook"]
+            },
+            "MATEL HOLDER": {
+                price: "Rs.25",
+                features: ["Metal body", "Durable", "Multiple styles"]
+            },
+            "PLASTIC HOLDER": {
+                price: "Rs.5",
+                features: ["Lightweight", "Daily use", "Quality finish"]
+            },
+            "PVC CARD": {
+                price: "Rs.12",
+                features: ["Waterproof", "HD Print", "Long Lasting"]
+            },
+            "STICKER": {
+                price: "Rs.2.5",
+                features: ["Custom print", "Bulk available", "Good finish"]
+            },
+            "USB HOLDER": {
+                price: "Rs.4",
+                features: ["Compact", "Daily use", "Bulk available"]
             }
         };
 
         const defaultProductInfo = {
-            price: 'Starting ₹5 | Bulk Available',
+            price: 'Rs.5',
             badge: null,
             features: ['Durable Material', 'Custom Printing Available', 'Bulk Orders Supported']
         };
@@ -841,8 +1025,8 @@
             {
                 id: 'BATCH',
                 name: productNames['BATCH'],
-                price: '₹20+',
-                desc: 'Badge and premium card holders with multiple styles.',
+                price: 'Rs.10',
+                desc: 'Badge and card holders with multiple styles.',
                 images: [
                     'image/BATCH/Badge_button_premium_202604050109.jpeg',
                     'image/BATCH/Similar_product_premium_202604050110.jpeg',
@@ -854,18 +1038,54 @@
             {
                 id: 'COMPLEATE ID CARD',
                 name: productNames['COMPLEATE ID CARD'],
-                price: '₹40',
-                desc: 'Complete ID card set with multiple photos and styles.',
-                images: [
-                    'image/COMPLEATE ID CARD/ID_card_holder_202604050219 (1).jpeg',
-                    'image/COMPLEATE ID CARD/ID_card_holder_202604050219 (2).jpeg',
-                    'image/COMPLEATE ID CARD/ID_card_holder_202604050219.jpeg'
+                price: 'Rs.25-Rs.45',
+                desc: 'Single product with two options.',
+                variants: [
+                    {
+                        id: 'OPTION_A',
+                        name: 'Option A',
+                        optionLabel: 'Without Printed Lanyard',
+                        price: 'Rs.25',
+                        desc: 'Without printed lanyward.',
+                        features: [
+                            '16mm size strap',
+                            'PVC card',
+                            'Quality plastic holder'
+                        ],
+                        images: [
+                            'image/COMPLEATE ID CARD/NORMAL ID CARD/Create_id_card_202604181048.jpeg',
+                            'image/COMPLEATE ID CARD/NORMAL ID CARD/Create_id_card_202604181048 (1).jpeg',
+                            'image/COMPLEATE ID CARD/NORMAL ID CARD/Create_id_card_202604181048 (2).jpeg',
+                            'image/COMPLEATE ID CARD/NORMAL ID CARD/Lanyard_catalog_product_202604181044.jpeg',
+                            'image/COMPLEATE ID CARD/NORMAL ID CARD/Lanyard_catalog_product_202604181045.jpeg',
+                            'image/COMPLEATE ID CARD/NORMAL ID CARD/plain-id-card-lanyard.jpg'
+                        ]
+                    },
+                    {
+                        id: 'OPTION_B',
+                        name: 'Option B',
+                        optionLabel: 'With Printed Lanyard',
+                        price: 'Rs.45',
+                        desc: 'Printed lanyward included.',
+                        features: [
+                            '18mm size strap',
+                            'PVC card',
+                            'Quality plastic holder'
+                        ],
+                        images: [
+                            'image/COMPLEATE ID CARD/PREMIUM ID CARD/ID_card_holder_202604050219.jpeg',
+                            'image/COMPLEATE ID CARD/PREMIUM ID CARD/ID_card_holder_202604050219 (1).jpeg',
+                            'image/COMPLEATE ID CARD/PREMIUM ID CARD/ID_card_holder_202604050219 (2).jpeg',
+                            'image/COMPLEATE ID CARD/PREMIUM ID CARD/3_different_lanyard_202604181048.jpeg',
+                            'image/COMPLEATE ID CARD/PREMIUM ID CARD/Single_blue_lanyard_202604181049.jpeg'
+                        ]
+                    }
                 ]
             },
             {
                 id: 'HOLDER',
                 name: productNames['HOLDER'],
-                price: '₹4',
+                price: 'Rs.5',
                 desc: 'Multiple ID holder photos from the holder category.',
                 images: [
                     'image/HOLDER/ID_card_holder_202604050233 (1).jpeg',
@@ -876,7 +1096,7 @@
             {
                 id: 'KEY CHAIN',
                 name: productNames['KEY CHAIN'],
-                price: '₹19',
+                price: 'Rs.12',
                 desc: 'Colorful keychain set shown in different angles.',
                 images: [
                     'image/KEY CHAIN/deferent_colour_or_202604050043.jpeg',
@@ -888,7 +1108,7 @@
             {
                 id: 'LANYWARD',
                 name: productNames['LANYWARD'],
-                price: '₹30',
+                price: 'Rs.18',
                 desc: 'Different lanyard designs with multiple photos.',
                 images: [
                     'image/LANYWARD/Single_blue_lanyard_202604050228.jpeg',
@@ -900,7 +1120,7 @@
             {
                 id: 'MATEL HOLDER',
                 name: productNames['MATEL HOLDER'],
-                price: '₹30',
+                price: 'Rs.25',
                 desc: 'Metal holder collection with multiple image options.',
                 images: [
                     'image/MATEL HOLDER/ID_card_holder_202604050017.jpeg',
@@ -911,7 +1131,7 @@
             {
                 id: 'PLASTIC HOLDER',
                 name: productNames['PLASTIC HOLDER'],
-                price: '₹20',
+                price: 'Rs.5',
                 desc: 'Plastic ID holder product with multiple photos.',
                 images: [
                     'image/PLASTIC HOLDER/ID_card_holder_202604050023.jpeg',
@@ -923,7 +1143,7 @@
             {
                 id: 'PVC CARD',
                 name: productNames['PVC CARD'],
-                price: '₹20',
+                price: 'Rs.12',
                 desc: 'PVC card selection with pictured samples.',
                 images: [
                     'image/PVC CARD/PVC_ID_card_202604050047.jpeg',
@@ -934,7 +1154,7 @@
             {
                 id: 'STICKER',
                 name: productNames['STICKER'],
-                price: '₹10',
+                price: 'Rs.2.5',
                 desc: 'Sticker designs and label examples in multiple images.',
                 images: [
                     'image/STICKER/Generate_cartoon_notebook_202604050125.jpeg',
@@ -947,7 +1167,7 @@
             {
                 id: 'USB HOLDER',
                 name: productNames['USB HOLDER'],
-                price: '₹25',
+                price: 'Rs.4',
                 desc: 'USB holder product photos from the folder.',
                 images: [
                     'image/USB HOLDER/photo_remove_quality_202604050210.jpeg',
@@ -961,6 +1181,7 @@
         const modalThumbs = document.getElementById('modalProductThumbs');
         const modalProductName = document.getElementById('modalProductName');
         const modalProductId = document.getElementById('modalProductId');
+        const modalVariants = document.getElementById('modalVariants');
         const modalProductPrice = document.getElementById('modalProductPrice');
         const modalProductDesc = document.getElementById('modalProductDesc');
         const modalWhatsApp = document.getElementById('modalWhatsApp');
@@ -1002,6 +1223,61 @@
             });
         };
 
+        const getPrimaryImages = product => {
+            if (Array.isArray(product.images) && product.images.length) {
+                return product.images;
+            }
+            if (Array.isArray(product.variants) && product.variants.length) {
+                return product.variants[0].images || [];
+            }
+            return [];
+        };
+
+        const setModalContent = ({ product, variant, productInfo, productName }) => {
+            const priceText = variant?.price || productInfo.price;
+            const descText = variant?.desc || product.desc;
+            const featureList = variant?.features?.length ? variant.features : productInfo.features;
+            const imageList = variant?.images || getPrimaryImages(product);
+
+            modalProductPrice.textContent = priceText;
+            modalProductDesc.textContent = descText;
+            modalFeaturesList.innerHTML = featureList.map(feature => `<li>${feature}</li>`).join('');
+            renderThumbnails(imageList);
+            updateModalImage(imageList[0]);
+
+            const orderName = variant ? `${productName} - ${variant.optionLabel || variant.name}` : productName;
+            modalWhatsApp.href = buildWhatsAppLink(orderName);
+        };
+
+        const renderVariantChips = ({ product, productInfo, productName }) => {
+            modalVariants.innerHTML = '';
+            const variants = product.variants || [];
+            if (!variants.length) {
+                modalVariants.style.display = 'none';
+                setModalContent({ product, productInfo, productName });
+                return;
+            }
+
+            modalVariants.style.display = 'flex';
+
+            variants.forEach((variant, index) => {
+                const chip = document.createElement('button');
+                chip.type = 'button';
+                chip.className = `variant-chip${index === 0 ? ' active' : ''}`;
+                chip.dataset.variantId = variant.id;
+                chip.textContent = `${variant.optionLabel || variant.name} - ${variant.price}`;
+                chip.addEventListener('click', () => {
+                    setModalContent({ product, variant, productInfo, productName });
+                    modalVariants.querySelectorAll('.variant-chip').forEach(item => {
+                        item.classList.toggle('active', item.dataset.variantId === variant.id);
+                    });
+                });
+                modalVariants.appendChild(chip);
+            });
+
+            setModalContent({ product, variant: variants[0], productInfo, productName });
+        };
+
         const openModal = productId => {
             const product = products.find(item => item.id === productId);
             if (!product) return;
@@ -1010,15 +1286,7 @@
             const productInfo = getProductInfo(product.id);
             modalProductName.textContent = productName;
             modalProductId.textContent = product.id;
-            modalProductPrice.textContent = productInfo.price;
-            modalProductDesc.textContent = product.desc;
-
-            const images = product.images || [];
-            renderThumbnails(images);
-            updateModalImage(images[0]);
-            modalFeaturesList.innerHTML = productInfo.features.map(feature => `<li>${feature}</li>`).join('');
-
-            modalWhatsApp.href = buildWhatsAppLink(productName);
+            renderVariantChips({ product, productInfo, productName });
             modalCall.href = 'tel:+917099481497';
             document.body.classList.add('modal-open');
             document.getElementById('productModal').classList.add('active');
@@ -1032,6 +1300,7 @@
         const createCard = (product, index) => {
             const productName = getProductName(product.id);
             const productInfo = getProductInfo(product.id);
+            const previewImages = getPrimaryImages(product);
 
             const card = document.createElement('article');
             card.className = 'card';
@@ -1043,16 +1312,9 @@
             const imageWrapper = document.createElement('div');
             imageWrapper.className = 'card-img photo';
             const img = document.createElement('img');
-            img.src = encodeImagePath(product.images[0] || '');
+            img.src = encodeImagePath(previewImages[0] || '');
             img.alt = productName;
             imageWrapper.appendChild(img);
-
-            if (productInfo.badge) {
-                const badge = document.createElement('span');
-                badge.className = `card-badge ${productInfo.badge === 'Best Seller' ? 'badge-best' : productInfo.badge === 'Premium' ? 'badge-premium' : 'badge-budget'}`;
-                badge.textContent = productInfo.badge;
-                imageWrapper.appendChild(badge);
-            }
 
             const content = document.createElement('div');
             content.className = 'card-content';
@@ -1091,3 +1353,5 @@
 
 </body>
 </html>
+
+
